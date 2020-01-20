@@ -1,5 +1,6 @@
 package com.namnt.asynclistdiffer.holders
 
+import android.os.SystemClock
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,17 +13,26 @@ import com.namnt.asynclistdiffer.models.Note
 class NoteViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView){
 
     @BindView(R.id.tvTitle)
-    private lateinit var title : TextView
+    lateinit var title : TextView
 
     @BindView(R.id.imvDelete)
-    private lateinit var imvDelete : ImageView
+    lateinit var imvDelete : ImageView
 
     init {
         ButterKnife.bind(this, itemView)
     }
     fun bindData(note : Note, clickListener : (Int) -> Unit) {
         title.text = note.title
-        imvDelete.setOnClickListener{ clickListener(adapterPosition)}
+        var mLastClickTime : Long = 0
+        imvDelete.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                if(SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return
+                }
+                clickListener(adapterPosition)
+                mLastClickTime = SystemClock.elapsedRealtime()
+            }
+        })
     }
 
 }

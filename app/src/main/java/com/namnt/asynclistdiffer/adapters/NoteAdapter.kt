@@ -8,7 +8,7 @@ import com.namnt.asynclistdiffer.holders.NoteViewHolder
 import com.namnt.asynclistdiffer.models.Note
 import com.namnt.asynclistdiffer.ultis.NoteDiffCallBack
 
-class NoteAdapter (val clickListener : (Int) -> Unit) : ListAdapter<Note, NoteViewHolder>(NoteDiffCallBack()){
+class NoteAdapter (private val clickListener : (Int) -> Unit) : ListAdapter<Note, NoteViewHolder>(NoteDiffCallBack()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val inflater = LayoutInflater.from(parent.context)
